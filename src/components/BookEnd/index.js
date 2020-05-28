@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table'
 import Card from 'react-bootstrap/Card'
+import Modal from 'react-bootstrap/Modal'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -34,6 +35,7 @@ function BookEnd(){
         const[valueBook, setValueBook] = useState('');
         const[valueAuthor, setValueAuthor] = useState('');
         const [click, setClick] = useState(false);
+        const [smShow, setSmShow] = useState(false);
 
         useEffect(() => {
             if (click) {
@@ -46,12 +48,18 @@ function BookEnd(){
             }
         }, [click])
 
-        const addClick = ()=> {
-            setBook( books.push({
-                name: valueBook,
-                author: valueAuthor
-            }))
-        };
+        const Click = () => {
+            if(!valueBook || !valueAuthor)
+            {
+                return (
+                    setSmShow(true)
+                )
+            }
+            else
+            {
+                setClick(true)
+            }
+        }
 
         let book = books && books.map(item =>{
         return(
@@ -83,7 +91,22 @@ function BookEnd(){
                     <p className="p">Автор книги:</p>
                     <input className="input" onChange={(e) => setValueAuthor(e.target.value)}></input>
                     <br></br>
-                    <button className="button" onClick={() => setClick(true)}>Добавить</button>
+                    <button className="button" onClick={() => Click()}>Добавить</button>
+                    
+                    {/* Окно ошибки */}
+                    <Modal
+                        size="sm"
+                        show={smShow}
+                        onHide={() => setSmShow(false)}
+                        aria-labelledby="example-modal-sizes-title-sm"
+                    >
+                        <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-sm">
+                            Ошибка
+                        </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Вы не заполнили все поля.</Modal.Body>
+                    </Modal>
             </Card>
                
                 
