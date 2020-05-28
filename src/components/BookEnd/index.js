@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
+import InputGroup from 'react-bootstrap/InputGroup'
+import FormControl from 'react-bootstrap/FormControl'
+import Button from 'react-bootstrap/Button'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -74,7 +77,7 @@ function BookEnd(){
     return(
             <Card bg="dark" text="white" className="card"> 
                 <Card.Header>Книги, которые я прочитал</Card.Header>
-                <Table className="table" striped bordered hover size="sm" variant="dark">
+                <Table className="table" striped bordered hover size="sm" variant="light" style={{width: '460px',marginLeft: '20px', marginTop: '20px'}}>
                     <thead>
                     <tr>
                         <th>Название книги.</th>
@@ -85,13 +88,20 @@ function BookEnd(){
                        {book}
                     </tbody>
                 </Table>
-                    <p className="p">Название книги:</p>
-                    <input className="input" onChange={(e) => setValueBook(e.target.value)}></input>
+                    <InputGroup size="sm" className="mb-3" onChange={(e) => setValueBook(e.target.value)} style={{width: '440px', marginLeft: '30px'}}>
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="inputGroup-sizing-sm">Название книги:</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                    </InputGroup>
+                    <InputGroup className="input" size="sm" className="mb-3" onChange={(e) => setValueAuthor(e.target.value)} style={{width: '440px', marginLeft: '30px'}}>
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="inputGroup-sizing-sm">Автор книги:</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                    </InputGroup>
+                    <Button variant="light" onClick={() => Click()} style={{width: '200px', marginLeft: '30px'}}>Добавить</Button>
                     <br></br>
-                    <p className="p">Автор книги:</p>
-                    <input className="input" onChange={(e) => setValueAuthor(e.target.value)}></input>
-                    <br></br>
-                    <button className="button" onClick={() => Click()}>Добавить</button>
                     
                     {/* Окно ошибки */}
                     <Modal
