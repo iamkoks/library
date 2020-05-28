@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import Table from 'react-bootstrap/Table'
+import Card from 'react-bootstrap/Card'
+import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const divStyle = {
     outline: '2px solid #000',
@@ -60,23 +64,30 @@ function BookEnd(){
 
             
     return(
-        <div style={divStyle}>
-                <table>
-                    <caption>Книги, которые я прочитал.</caption>
+            <Card bg="dark" text="white" className="card"> 
+                <Card.Header>Книги, которые я прочитал</Card.Header>
+                <Table className="table" striped bordered hover size="sm" variant="dark">
+                    <thead>
                     <tr>
                         <th>Название книги.</th>
                         <th>Автор книги.</th>
                     </tr>
-                    {book}
-                </table>
-                <div style={divStyle}>
-                    Название книги:<input onChange={(e) => setValueBook(e.target.value)}></input>
+                    </thead>
+                    <tbody>
+                       {book}
+                    </tbody>
+                </Table>
+                    <p className="p">Название книги:</p>
+                    <input className="input" onChange={(e) => setValueBook(e.target.value)}></input>
                     <br></br>
-                    Автор книги:<input onChange={(e) => setValueAuthor(e.target.value)}></input>
+                    <p className="p">Автор книги:</p>
+                    <input className="input" onChange={(e) => setValueAuthor(e.target.value)}></input>
                     <br></br>
-                    <button onClick={() => setClick(true)}>Добавить</button>
-                </div>
-            </div>
+                    <button className="button" onClick={() => setClick(true)}>Добавить</button>
+            </Card>
+               
+                
+    
     )
 }
 
