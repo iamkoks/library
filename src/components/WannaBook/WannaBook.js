@@ -1,88 +1,130 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
+import Table from 'react-bootstrap/Table'
+import Card from 'react-bootstrap/Card'
+import Modal from 'react-bootstrap/Modal'
+import InputGroup from 'react-bootstrap/InputGroup'
+import FormControl from 'react-bootstrap/FormControl'
+import Button from 'react-bootstrap/Button'
+import './index.css'
 
 
-const divStyle = {
-    outline: '2px solid #000',
-    width: '250px' // 'ms' is the only lowercase vendor prefix
-  };
+function WannaBook(){
 
-
-class AppNew extends React.Component {
-	constructor() {
-		super();
-		this.state = {
-			books: [
-                {
-                    name: "Война и Мир",
-                    author: 'sdad'
-                },
-                {
-                    name: "qwe",
-                    author: 'wqe'
-                },
-                {
-                    name: "rty",
-                    author: 'fdg'
-                },
-                {
-                    name: "yui",
-                    author: 'cxv'
-                }
-            ],
-            valueBook: '',
-            valueAuthor: ''
-		};
-	}
-
-	//Изменяем this.state.value при изменении селекта:
-	addClick(e) {
-        this.state.books.push({
-            name: this.state.valueBook,
-            author: this.state.valueAuthor
-        });
-        this.setState({books: this.state.books})
-    }
-
-    changeBook(e){
-        this.setState({valueBook: e.target.value})
-    }
-
-    changeAuthor(e){
-        this.setState({valueAuthor: e.target.value})
-    }
-    
-	render() {
+        const[books, setBook] = useState(
+        [
+            {
+                name: "Война и Мир",
+                author: 'sdad'
+            },
+            {
+                name: "qwe",
+                author: 'wqe'
+            },
+            {
+                name: "rty",
+                author: 'fdg'
+            },
+            {
+                name: "yui",
+                author: 'cxv'
+            }]
+        )
         
-        let books = this.state.books.map(item =>{
-           return(
-               <tr>
-                   <th>{item.name}</th>
-                   <th>{item.author}</th>
-               </tr>
-            ) 
-        })
+        const[valueBook, setValueBook] = useState('');
+        const[valueAuthor, setValueAuthor] = useState('');
+        const [click, setClick] = useState(false);
+        const [smShow, setSmShow] = useState(false);
 
-		return(
-            <div style={divStyle}>
-               <table>
-                    <caption>Книги, которые я хочу прочитать.</caption>
+        useEffect(() => {
+            if (click) {
+                books.push({
+                    name: valueBook,
+                    author: valueAuthor
+                });
+                setBook(books);
+                setClick(false);
+            }
+        }, [click])
+
+        const Click = () => {
+            if(!valueBook || !valueAuthor)
+            {
+                return (
+                    setSmShow(true)
+                )
+            }
+            else
+            {
+                setClick(true)
+            }
+        }
+
+        let book = books && books.map((item, index) =>{
+        return(
+                    <tr key={index}>
+                        <th>{index}</th>
+                        <th key={index}>{item.name}</th>
+                        <th key={index}>{item.author}</th>
+                    </tr>
+            ) 
+        });
+
+            
+    return(
+            <Card bg="dark" text="white" className="card"> 
+                <Card.Header>Книги, которые я хочу прочитать</Card.Header>
+                <Table className="table" striped bordered hover size="sm" variant="light" style={{width: '460px',marginLeft: '20px', marginTop: '20px'}}>
+                    <thead>
                     <tr>
+                        <th>id</th>
                         <th>Название книги.</th>
                         <th>Автор книги.</th>
                     </tr>
-                    {books}
-                </table>
-                <div style={divStyle}>
-                    Название книги:<input onChange={this.changeBook.bind(this)}></input>
+                    </thead>
+                    <tbody>
+                        {book}
+                    </tbody>
+                </Table>
+                    <InputGroup size="sm" className="mb-3" onChange={(e) => setValueBook(e.target.value)} style={{width: '440px', marginLeft: '30px'}}>
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="inputGroup-sizing-sm">Название книги:</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                    </InputGroup>
+                    <InputGroup className="input" size="sm" className="mb-3" onChange={(e) => setValueAuthor(e.target.value)} style={{width: '440px', marginLeft: '30px'}}>
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="inputGroup-sizing-sm">Автор книги:</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                    </InputGroup>
+                    <Button variant="light" onClick={() => Click()} style={{width: '200px', marginLeft: '30px'}}>Добавить</Button>
+                    <InputGroup className="input" size="sm" className="mb-3" onChange={(e) => setValueAuthor(e.target.value)} style={{width: '440px', marginLeft: '30px', marginTop: '10px'}}>
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="inputGroup-sizing-sm">Выберите id:</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                    </InputGroup>
+                    <Button variant="light" style={{width: '200px', marginLeft: '30px'}}>Удалить</Button>
                     <br></br>
-                    Автор книги:<input onChange={this.changeAuthor.bind(this)}></input>
-                    <br></br>
-                    <button onClick={this.addClick.bind(this)}>Добавить</button>
-                </div>
-            </div>
-        ) 
+                    
+                    {/* Окно ошибки */}
+                    <Modal
+                        size="sm"
+                        show={smShow}
+                        onHide={() => setSmShow(false)}
+                        aria-labelledby="example-modal-sizes-title-sm"
+                    >
+                        <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-sm">
+                            Ошибка
+                        </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Вы не заполнили все поля.</Modal.Body>
+                    </Modal>
+            </Card>
         
-	}
+    
+    )
 }
 
-export default AppNew;
+export default WannaBook;

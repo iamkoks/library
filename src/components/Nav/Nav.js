@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from 'react-bootstrap/Navbar'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
 function Nav(){

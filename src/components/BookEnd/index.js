@@ -6,7 +6,6 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import './index.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const divStyle = {
     outline: '2px solid #000',
@@ -37,21 +36,49 @@ function BookEnd(){
         
         const[valueBook, setValueBook] = useState('');
         const[valueAuthor, setValueAuthor] = useState('');
-        const [click, setClick] = useState(false);
+        const [clickAdd, setAddClick] = useState(false);
         const [smShow, setSmShow] = useState(false);
+        const [indexDelete, setIndexDelete] = useState(-1)
+        const [indexChange, setIndexChange] = useState(-1)
 
         useEffect(() => {
-            if (click) {
+            if (clickAdd && indexChange < 0) {
                 books.push({
                     name: valueBook,
                     author: valueAuthor
                 });
                 setBook(books);
-                setClick(false);
+                setValueAuthor('');
+                setValueBook('');
             }
-        }, [click])
+            else if(clickAdd && indexChange >= 0){
+                books.splice(indexChange, 1, {name: valueBook, author: valueAuthor})
+                setBook(books);
+                setIndexChange(-1);
+                setValueAuthor('');
+                setValueBook('');
+            }
+            setAddClick(false);
+        }, [clickAdd])
 
-        const Click = () => {
+        useEffect(() => {
+            if (indexDelete>=0) {
+                books.splice(indexDelete, 1)
+                setBook(books);
+                setIndexDelete(-1);
+            }
+        }, [indexDelete])
+
+        useEffect(() => {
+            if (indexChange>=0) {
+                setValueBook(books[indexChange].name)
+                setValueAuthor(books[indexChange].author)
+            }
+        }, [indexChange])
+
+
+
+        const Add = () => {
             if(!valueBook || !valueAuthor)
             {
                 return (
@@ -60,15 +87,18 @@ function BookEnd(){
             }
             else
             {
-                setClick(true)
+                setAddClick(true)
             }
         }
 
-        let book = books && books.map(item =>{
+
+
+        let book = books && books.map((item, index) =>{
         return(
-                    <tr>
+                    <tr key={index} onClick={() => setIndexChange(index)}>
                         <th>{item.name}</th>
                         <th>{item.author}</th>
+                        <th><button onClick={() => setIndexDelete(index)}>Удалить</button></th>
                     </tr>
             ) 
         });
@@ -85,22 +115,22 @@ function BookEnd(){
                     </tr>
                     </thead>
                     <tbody>
-                       {book}
+                        {book}
                     </tbody>
                 </Table>
                     <InputGroup size="sm" className="mb-3" onChange={(e) => setValueBook(e.target.value)} style={{width: '440px', marginLeft: '30px'}}>
                         <InputGroup.Prepend>
                         <InputGroup.Text id="inputGroup-sizing-sm">Название книги:</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={valueBook}/>
                     </InputGroup>
                     <InputGroup className="input" size="sm" className="mb-3" onChange={(e) => setValueAuthor(e.target.value)} style={{width: '440px', marginLeft: '30px'}}>
                         <InputGroup.Prepend>
                         <InputGroup.Text id="inputGroup-sizing-sm">Автор книги:</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                        <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={valueAuthor}/>
                     </InputGroup>
-                    <Button variant="light" onClick={() => Click()} style={{width: '200px', marginLeft: '30px'}}>Добавить</Button>
+                        <Button variant="light" onClick={() => Add()} style={{width: '200px', marginLeft: '30px'}}>{ (indexChange>=0) ? "Изменить" : "Добавить"}</Button>
                     <br></br>
                     
                     {/* Окно ошибки */}
@@ -118,8 +148,7 @@ function BookEnd(){
                         <Modal.Body>Вы не заполнили все поля.</Modal.Body>
                     </Modal>
             </Card>
-               
-                
+        
     
     )
 }

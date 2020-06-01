@@ -8,8 +8,8 @@ function App() {
   return (
     <div className="MainDiv">
       <Nav></Nav>
-      {/* <WannaBook></WannaBook> */}
       <BookEnd></BookEnd>
+      {/* <WannaBook className="wannaBook"></WannaBook> */}
     </div>
   );
 }
