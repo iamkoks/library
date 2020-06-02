@@ -1,7 +1,6 @@
 .card {
     width: 500px;
-    margin-top: 40px;
-    margin-left: 40px;
+
 }
 
 .button {
@@ -17,4 +16,9 @@
 
 .p {
     margin-left: 20px;
+}
+
+.table {
+    overflow: auto;
+    height: 100px;
 }

@@ -98,7 +98,9 @@ function BookEnd(){
                     <tr key={index} onClick={() => setIndexChange(index)}>
                         <th>{item.name}</th>
                         <th>{item.author}</th>
-                        <th><button onClick={() => setIndexDelete(index)}>Удалить</button></th>
+                        <th>
+                            <Button variant="outline-dark" onClick={() => setIndexDelete(index)}>Удалить</Button>
+                        </th>
                     </tr>
             ) 
         });
@@ -107,6 +109,7 @@ function BookEnd(){
     return(
             <Card bg="dark" text="white" className="card"> 
                 <Card.Header>Книги, которые я прочитал</Card.Header>
+                <div style={{overflowY: "auto", height: "230px"}}>
                 <Table className="table" striped bordered hover size="sm" variant="light" style={{width: '460px',marginLeft: '20px', marginTop: '20px'}}>
                     <thead>
                     <tr>
@@ -118,7 +121,8 @@ function BookEnd(){
                         {book}
                     </tbody>
                 </Table>
-                    <InputGroup size="sm" className="mb-3" onChange={(e) => setValueBook(e.target.value)} style={{width: '440px', marginLeft: '30px'}}>
+                </div>
+                    <InputGroup size="sm" className="mb-3" onChange={(e) => setValueBook(e.target.value)} style={{width: '440px', marginLeft: '30px', marginTop: '10px'}}>
                         <InputGroup.Prepend>
                         <InputGroup.Text id="inputGroup-sizing-sm">Название книги:</InputGroup.Text>
                         </InputGroup.Prepend>
